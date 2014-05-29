@@ -120,6 +120,37 @@ class SshPluginSpec extends Specification {
         remoteNameSet(childProject.remotes.role('roleB')) == ['appServer'].toSet()
     }
 
+    def "the remote on child project overrides parent one if name is duplicated"() {
+        when:
+        def parentProject = ProjectBuilder.builder().build()
+        parentProject.with {
+            apply plugin: 'ssh'
+            remotes {
+                webServer {
+                    host = 'parentHost'
+                    password = 'parentPassword'
+                }
+            }
+        }
+
+        def childProject = ProjectBuilder.builder().withParent(parentProject).build()
+        childProject.with {
+            apply plugin: 'ssh'
+            remotes {
+                webServer {
+                    host = 'childHost'
+                    password = 'childPassword'
+                }
+            }
+        }
+
+        then:
+        parentProject.remotes.webServer.host == 'parentHost'
+        parentProject.remotes.webServer.password == 'parentPassword'
+        childProject.remotes.webServer.host == 'childHost'
+        childProject.remotes.webServer.password == 'childPassword'
+    }
+
     def "the parent project without the plugin is ignored"() {
         when:
         def parentProject = ProjectBuilder.builder().build()

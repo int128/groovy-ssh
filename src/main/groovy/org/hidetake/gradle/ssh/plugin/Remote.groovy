@@ -1,13 +1,16 @@
 package org.hidetake.gradle.ssh.plugin
 
+import groovy.transform.AutoClone
+import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
 
 /**
  * Represents a remote host.
  *
  * @author hidetake.org
- *
  */
+@AutoClone
+@EqualsAndHashCode
 @ToString
 class Remote {
     /**
@@ -39,7 +42,7 @@ class Remote {
     /**
      * Roles.
      */
-    final List<String> roles = []
+    List<String> roles = []
 
     @Delegate
     ConnectionSettings connectionSettings = new ConnectionSettings()

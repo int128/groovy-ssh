@@ -1,8 +1,10 @@
 package org.hidetake.gradle.ssh.plugin
 
+import groovy.transform.AutoClone
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
 
+@AutoClone
 @EqualsAndHashCode
 @ToString(excludes = 'password, passphrase, allowAnyHosts')
 class ConnectionSettings extends Settings<ConnectionSettings> {

@@ -25,7 +25,9 @@ class SshPlugin implements Plugin<Project> {
         remotes.metaClass.mixin(RemoteContainerExtension)
         def parentRemotes = project.parent?.extensions?.findByName('remotes')
         if (parentRemotes instanceof NamedDomainObjectContainer<Remote>) {
-            remotes.addAll(parentRemotes)
+            parentRemotes.each { Remote parentRemote ->
+                remotes.add(parentRemote.clone() as Remote)
+            }
         }
         remotes
     }
