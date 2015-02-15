@@ -79,6 +79,35 @@ class SftpOperations {
     }
 
     /**
+     * Change mode of the file or directory.
+     *
+     * @param permission
+     * @param path
+     */
+    void chmod(int permission, String path) {
+        log.info("Change permission of ($path) to ($permission)")
+        try {
+            channel.chmod(permission, path)
+        } catch (JschSftpException e) {
+            throw new SftpException('Failed to change permission', e)
+        }
+    }
+
+    /**
+     * Remove the file.
+     *
+     * @param path
+     */
+    void rm(String path) {
+        log.info("Remove file ($path)")
+        try {
+            channel.rm(path)
+        } catch (JschSftpException e) {
+            throw new SftpException('Failed to remove the file', e)
+        }
+    }
+
+    /**
      * Create a directory.
      *
      * @param path
