@@ -1,6 +1,5 @@
 package org.hidetake.groovy.ssh.operation
 
-import com.jcraft.jsch.ChannelShell
 import groovy.util.logging.Slf4j
 import org.codehaus.groovy.tools.Utilities
 import org.hidetake.groovy.ssh.connection.Connection
@@ -10,9 +9,11 @@ import org.hidetake.groovy.ssh.core.settings.OperationSettings
 import org.hidetake.groovy.ssh.extension.settings.LocalPortForwardSettings
 import org.hidetake.groovy.ssh.extension.settings.RemotePortForwardSettings
 import org.hidetake.groovy.ssh.interaction.Interaction
-import org.hidetake.groovy.ssh.operation.expect.Expect
 import org.hidetake.groovy.ssh.session.BadExitStatusException
-import org.hidetake.groovy.ssh.util.Utility
+import org.hidetake.groovy.ssh.operation.expect.Expect
+import com.jcraft.jsch.ChannelShell
+
+import static org.hidetake.groovy.ssh.util.Utility.callWithDelegate
 
 /**
  * Default implementation of {@link Operations}.
@@ -188,7 +189,7 @@ class DefaultOperations implements Operations {
         try {
             channel.connect()
             log.debug("SFTP #${channel.id} started")
-            Utility.callWithDelegate(closure, new SftpOperations(channel))
+            callWithDelegate(closure, new SftpOperations(channel))
         } finally {
             channel.disconnect()
             log.debug("SFTP #${channel.id} closed")
