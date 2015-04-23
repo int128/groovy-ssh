@@ -20,4 +20,12 @@ trait Shell implements SessionExtension {
         assert settings != null, 'settings must not be null'
         operations.shell(operationSettings + new OperationSettings(settings))
     }
+
+    /**
+     * Performs an expect-like session
+     * @param interaction sequence of 'send' and 'expect' instructions
+     */
+    void shellExpect(Closure interaction){
+        operations.shellExpect(interaction)
+    }
 }
