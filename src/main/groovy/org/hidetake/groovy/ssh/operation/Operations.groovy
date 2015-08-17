@@ -30,4 +30,6 @@ interface Operations {
      * @return result of the closure
      */
     def sftp(@DelegatesTo(SftpOperations) Closure closure)
+
+    void shellExpect(Closure interaction)
 }

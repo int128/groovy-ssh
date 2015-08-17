@@ -5,6 +5,7 @@ import org.hidetake.groovy.ssh.extension.settings.LocalPortForwardSettings
 import org.hidetake.groovy.ssh.core.settings.OperationSettings
 import org.hidetake.groovy.ssh.core.Remote
 import org.hidetake.groovy.ssh.extension.settings.RemotePortForwardSettings
+import org.hidetake.groovy.ssh.operation.expect.DryRunExpect
 
 /**
  * Dry-run implementation of {@link Operations}.
@@ -23,6 +24,13 @@ class DryRunOperations implements Operations {
     @Override
     void shell(OperationSettings settings) {
         log.info("[dry-run] Executing a shell")
+    }
+
+    @Override
+    void shellExpect(Closure interaction) {
+        DryRunExpect expectObj = new DryRunExpect()
+        interaction.delegate = expectObj
+        interaction.call()
     }
 
     @Override

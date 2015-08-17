@@ -10,6 +10,8 @@ import org.hidetake.groovy.ssh.extension.settings.LocalPortForwardSettings
 import org.hidetake.groovy.ssh.extension.settings.RemotePortForwardSettings
 import org.hidetake.groovy.ssh.interaction.Interaction
 import org.hidetake.groovy.ssh.session.BadExitStatusException
+import org.hidetake.groovy.ssh.operation.expect.Expect
+import com.jcraft.jsch.ChannelShell
 
 import static org.hidetake.groovy.ssh.util.Utility.callWithDelegate
 
@@ -206,6 +208,22 @@ class DefaultOperations implements Operations {
                 standardOutput.listenLogging { String m -> System.out.println("${remote.name}|$m") }
                 standardError?.listenLogging { String m -> System.err.println("${remote.name}|$m") }
                 break
+        }
+    }
+
+
+    @Override
+    void shellExpect(Closure interaction) {
+        ChannelShell channel = connection.createShellChannel(null)
+        Expect expectObj = new Expect(channel.getInputStream(), channel.getOutputStream())
+        channel.connect()
+        interaction.delegate = expectObj
+        try {
+            interaction.call()
+        }
+        finally {
+            expectObj.close()
+            channel.disconnect()
         }
     }
 }
