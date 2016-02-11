@@ -34,9 +34,9 @@ class ConnectionSettings implements Settings<ConnectionSettings> {
 
     /**
      * Pass-phrase for the identity key.
-     * This may be null.
+     * This may be null. It may also be a Closure.
      */
-    String passphrase
+    def passphrase
 
     /**
      * Proxy configuration for connecting to a host.
@@ -71,7 +71,7 @@ class ConnectionSettings implements Settings<ConnectionSettings> {
      */
     Integer keepAliveSec
 
-
+    
     /**
      * Represents that strict host key checking is turned off and any host is allowed.
      * @see ConnectionSettings#knownHosts
@@ -96,6 +96,13 @@ class ConnectionSettings implements Settings<ConnectionSettings> {
             keepAliveSec: 60,
     )
 
+    public String getPassphrase(){
+        if(passphrase instanceof Closure){
+            return passphrase()
+        }
+        passphrase
+    }
+    
     ConnectionSettings plus(ConnectionSettings right) {
         new ConnectionSettings(
                 user:         findNotNull(right.user, user),
