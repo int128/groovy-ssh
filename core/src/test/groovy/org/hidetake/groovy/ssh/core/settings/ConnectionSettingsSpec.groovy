@@ -99,4 +99,16 @@ class ConnectionSettingsSpec extends Specification {
         !result.contains('thePassphrase')
     }
 
+    def "passphrase should be able to be defined as a Closure"() {
+        given:
+        def settings = new ConnectionSettings(
+            user: 'theUser', password:'thePassword',
+            identity: new File('theIdentity'), passphrase: { "x" * 2 }
+        )
+        when:
+        def passphrase = settings.passphrase
+        
+        then:
+        passphrase == "xx"
+    }
 }
