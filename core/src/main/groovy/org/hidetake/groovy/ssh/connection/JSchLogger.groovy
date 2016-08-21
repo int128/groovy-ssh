@@ -12,14 +12,22 @@ import groovy.util.logging.Slf4j
 @Singleton
 @Slf4j
 class JSchLogger implements Logger {
+
+    final ThreadLocal<Boolean> jschLoggerSetting = new ThreadLocal<>()
+
     @Override
     boolean isEnabled(int logLevel) {
         switch (logLevel) {
-            case INFO:  return log.isDebugEnabled()
-            case WARN:  return log.isInfoEnabled()
-            case ERROR: return log.isWarnEnabled()
-            case FATAL: return log.isErrorEnabled()
-            default:    return false
+            case INFO:
+                return log.isDebugEnabled() && jschLoggerSetting.get()
+            case WARN:
+                return log.isInfoEnabled()
+            case ERROR:
+                return log.isWarnEnabled()
+            case FATAL:
+                return log.isErrorEnabled()
+            default:
+                return false
         }
     }
 
@@ -30,13 +38,13 @@ class JSchLogger implements Logger {
                 log.debug("[jsch] $message")
                 break
             case WARN:
-                log.info("[jsch] $message")
+                log.info(message)
                 break
             case ERROR:
-                log.warn("[jsch] $message")
+                log.warn(message)
                 break
             case FATAL:
-                log.error("[jsch] $message")
+                log.error(message)
                 break
         }
     }
