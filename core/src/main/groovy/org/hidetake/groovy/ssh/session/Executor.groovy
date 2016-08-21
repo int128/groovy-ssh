@@ -41,8 +41,8 @@ class Executor {
         log.debug("Using per-service settings: $perServiceSettings")
         def mergedSettings = new CompositeSettings.With(CompositeSettings.With.DEFAULT, globalSettings, perServiceSettings)
 
-        // not thread safe
-        JSch.logger = mergedSettings.jschLog ? JSchLogger.instance : null
+        JSchLogger.instance.jschLoggerSetting.set(mergedSettings.jschLog)
+        JSch.logger = JSchLogger.instance
 
         if (mergedSettings.dryRun) {
             dryRun(plans, mergedSettings)
