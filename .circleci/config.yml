@@ -1,0 +1,110 @@
+version: 2
+jobs:
+  build:
+    docker:
+      # The primary container is an instance of the first list image listed. Build commands run in this container
+      - image: circleci/openjdk:8-jdk
+      # The secondary container is an instance of the second listed image which is run in a common network where ports exposed on the primary container are available on localhost.
+      # commented out for now since a script is pulling and running it
+      # - image: int128/integration-test-box:latest
+    environment:
+      JAVA_HOME_7: /usr/lib/jvm/java-7-openjdk-amd64
+      TERM: dumb
+      GRADLE_OPTS: -Xmx1g -Xms1g
+      DOCKER_SSH_PORT: 8022
+      DOCKER_SSH_USER: tester
+    working_directory: ~/work_dir
+    steps:
+      - checkout
+      - run:
+          name: Interpolate enviornment variables
+          command: |
+            echo 'export HOME=~/' >> $BASH_ENV
+            # The below is only due to what seems like a bug in the circleci cli for running builds locally
+            # https://discuss.circleci.com/t/circleci-build-local-machine-fails-when-using-setup-remote-docker/15487
+            if (which sudo) then #only local builds have sudo command
+              echo "Using alias for docker, docker='sudo docker'"
+              #   but of course, that doesn't work for some reason unless its wrapped in a bash script file
+              BIN_DIR=`pwd`/tbin
+              mkdir -p $BIN_DIR
+              SUDOCKER=$BIN_DIR/docker
+              echo "#! /bin/bash" > $SUDOCKER
+              echo sudo `which docker` '${1+"$@"}' >> $SUDOCKER
+              chmod +x $SUDOCKER
+              echo export PATH=$BIN_DIR:'$PATH' >> $BASH_ENV
+            fi
+            echo 'final bash env:'
+            cat $BASH_ENV
+      - run:
+          name: Configure git
+          command: |
+            echo "https://${GITHUB_TOKEN}:@github.com" > "$HOME/.git-credentials"
+            git config --global --remove-section url."ssh://git@github.com:"
+            git config --global user.name "$(git log -1 --format=format:%an)"
+            git config --global user.email "$(git log -1 --format=format:%ae)"
+            git config --global credential.helper store
+            git config --global core.autocrlf input
+            git config --global push.default current
+      - run:
+          name: Clone gradle-ssh-plugin repo
+          command: git -C plugin-integration clone --depth 1 https://github.com/int128/gradle-ssh-plugin
+      - run: ./gradlew resolveDependencies
+      - setup_remote_docker
+      - run:
+          name: Run and setup integration-test-box containers with ssh
+          command: ./os-integration-test/setup-ssh.sh
+      - run: ./gradlew check publishPluginIntegrationPublicationToMavenLocal
+
+      # the real acceptance build & test?
+      - run: ./plugin-integration/run-plugin-integration-test.sh
+
+      # https://circleci.com/docs/2.0/collect-test-data/#gradle-junit-test-results
+      # https://circleci.com/docs/2.0/env-vars/#build-details
+      # looks like the $CIRCLE_TEST_REPORTS and $CIRCLE_ARTIFACTS are not given in 2.0
+      - run:
+          name: Save test results
+          environment:
+            CIRCLE_TEST_REPORTS: ~/junit/ # note: must be the same as the path in store_test_results step
+          command: |
+            mkdir -p $CIRCLE_TEST_REPORTS
+            find . -type f -regex "build/test-results/.*xml" -exec cp {} $CIRCLE_TEST_REPORTS \;
+            find . -type f -regex "plugin-integration/gradle-ssh-plugin/build/test-results/.*xml" -exec cp {} $CIRCLE_TEST_REPORTS \;
+          when: always
+      - store_test_results:
+          path: ~/junit
+      - run:
+          name: Save build reports
+          environment:
+            CIRCLE_ARTIFACTS: ~/reports/ # note: must be the same as the path in store_artifacts step
+          command: |
+            mkdir -p $CIRCLE_ARTIFACTS
+            find . -type f -regex "build/reports/.*" -exec cp {} $CIRCLE_ARTIFACTS \;
+            find . -type f -regex "plugin-integration/gradle-ssh-plugin/build/test-results/.*xml" -exec cp {} $CIRCLE_ARTIFACTS/plugin-reports \;
+          when: always
+      - store_artifacts:
+          path: ~/reports
+
+      - deploy:
+          name: Release Docs Github
+          command: | # unfortunately looks like this is a sh shell
+            if [ "${CIRCLE_BRANCH}" = "master" ] && [ "$GITHUB_TOKEN" ]; then
+              ./docs/release-github.sh
+            else
+              echo "Skipping docs release, branch is not master or no github token set"
+            fi
+      - deploy:
+          name: Release on Bintray
+          environment:
+            VERSION_TAG_REGEX: ^v[0-9]+(\.[0-9]+)*$
+          command: |
+            if (echo "${CIRCLE_TAG}" | grep -Eq $VERSION_TAG_REGEX) then
+              if [ "$GITHUB_TOKEN" ] && [ "$BINTRAY_KEY" ]; then
+                ./gradlew bintrayUpload
+                ./cli/release-github.sh
+                ./plugin-integration/create-branch-for-release.sh
+              else
+                echo "Skipping bintray upload due to missing github or bintray key"
+              fi
+            else
+              echo "Skipping bintray upload because tag did not match ${VERSION_TAG_REGEX}"
+            fi
