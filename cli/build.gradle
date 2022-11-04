@@ -5,25 +5,25 @@ plugins {
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
 }
 
 mainClassName = 'org.hidetake.groovy.ssh.Main'
 
 dependencies {
     compile project(':core')
-    compile 'ch.qos.logback:logback-classic:1.1.2'
+    compile 'ch.qos.logback:logback-classic:1.4.4'
 
-    runtime 'commons-cli:commons-cli:1.2'
+    runtime 'commons-cli:commons-cli:1.5.0'
 
     testCompile project(':server-integration-test')
 
     testCompile 'org.codehaus.groovy.modules.http-builder:http-builder:0.7.1'
 
-    testCompile 'org.spockframework:spock-core:1.2-groovy-2.5'
-    testRuntime 'cglib:cglib-nodep:3.2.10'
-    testRuntime 'org.objenesis:objenesis:3.0.1'
+    testCompile 'org.spockframework:spock-core:1.3-groovy-2.5'
+    testRuntime 'cglib:cglib-nodep:3.3.0'
+    testRuntime 'org.objenesis:objenesis:3.2'
 }
 
 test {
