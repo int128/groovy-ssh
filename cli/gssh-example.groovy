@@ -1,8 +1,8 @@
 ssh.remotes {
     tester {
         host = 'localhost'
-        port = 22
-        user = 'tester'
+        port = 2222
+        user = 'root'
         identity = new File('os-integration-test/etc/ssh/id_rsa')
         knownHosts = addHostKey(new File('cli/build/known_hosts'))
     }
