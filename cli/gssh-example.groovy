@@ -15,5 +15,5 @@ ssh.run {
 }
 
 assert new File('cli/build/known_hosts').readLines().any { line ->
-    line.startsWith('localhost ssh-rsa')
+    line.startsWith('localhost ecdsa-sha2-nistp256')
 }
