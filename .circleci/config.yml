@@ -24,7 +24,7 @@ jobs:
       - run:
           name: "Start dockerized SSH server"
           command: |
-            docker-compose up -d -f ./.circleci/docker-compose.yml
+            docker-compose -f ./.circleci/docker-compose.yml up -d
       - run: ./gradlew build
       - store_test_results:
           path: build/test-results
