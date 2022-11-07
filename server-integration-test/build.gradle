@@ -1,8 +1,9 @@
-repositories {
-    mavenCentral()
-}
 plugins {
     id 'groovy'
+}
+
+repositories {
+    mavenCentral()
 }
 
 dependencies {
