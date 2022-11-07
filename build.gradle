@@ -3,7 +3,7 @@ allprojects {
     version = System.getenv('CIRCLE_TAG') ?: 'SNAPSHOT'
 
     repositories {
-        jcenter()
+        mavenCentral()
     }
 
     afterEvaluate {
