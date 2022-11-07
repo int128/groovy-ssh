@@ -1,10 +1,11 @@
-repositories {
-    mavenCentral()
-}
 plugins {
     id 'groovy'
     id 'maven-publish'
     id 'com.jfrog.bintray' version '1.8.4'
+}
+
+repositories {
+    mavenCentral()
 }
 
 java {
