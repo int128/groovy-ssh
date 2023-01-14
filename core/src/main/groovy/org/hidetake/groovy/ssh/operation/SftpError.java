@@ -4,7 +4,7 @@ package org.hidetake.groovy.ssh.operation;
  * SFTP errors defined in the SFTP protocol.
  * Implemented as Java native enum for Gradle 1.x compatibility.
  *
- * @link http://tools.ietf.org/html/draft-ietf-secsh-filexfer-13#section-9.1
+ * @see http://tools.ietf.org/html/draft-ietf-secsh-filexfer-13#section-9.1
  * @author Hidetake Iwata
  */
 public enum SftpError {
