@@ -1,4 +1,5 @@
 plugins {
+    id 'java-library'
     id 'groovy'
     id 'maven-publish'
 }
@@ -18,22 +19,12 @@ processResources {
     filter(org.apache.tools.ant.filters.ReplaceTokens, tokens: ['version': project.version])
 }
 
-task javadocJar(type: Jar, dependsOn: groovydoc) {
-    from "${buildDir}/docs/groovydoc"
-    classifier = 'javadoc'
-}
-
-task sourcesJar(type: Jar) {
-    from sourceSets.main.allSource
-    classifier = 'sources'
+java {
+    withJavadocJar()
+    withSourcesJar()
 }
 
 description = 'Groovy SSH library'
-ext {
-    license = 'Apache-2.0'
-    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-    vcsUrl = 'https://github.com/int128/groovy-ssh.git'
-}
 
 publishing {
     repositories {
@@ -48,37 +39,19 @@ publishing {
     }
 
     publications {
-        pluginIntegration(MavenPublication) {
-            from components.java
-            artifactId parent.name
-        }
-        release(MavenPublication) {
+        maven(MavenPublication) {
             from components.java
             artifact sourcesJar
             artifact javadocJar
             artifactId parent.name
-            pom.withXml {
-                asNode().children().last() + {
-                    resolveStrategy = DELEGATE_FIRST
-                    name parent.name
-                    description project.description
-                    url project.vcsUrl
-                    scm {
-                        url project.vcsUrl
-                        connection "scm:git:$project.vcsUrl"
-                    }
-                    licenses {
-                        license {
-                            name project.license
-                            url project.licenseUrl
-                            distribution 'repo'
-                        }
-                    }
-                    developers {
-                        developer {
-                            id parent.group
-                            name parent.group
-                        }
+            pom {
+                name = parent.name
+                description = project.description
+                url = 'https://github.com/int128/groovy-ssh'
+                licenses {
+                    license {
+                        name = 'The Apache License, Version 2.0'
+                        url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
                     }
                 }
             }
