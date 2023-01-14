@@ -40,10 +40,8 @@ publishing {
 
     publications {
         maven(MavenPublication) {
-            from components.java
-            artifact sourcesJar
-            artifact javadocJar
             artifactId parent.name
+            from components.java
             pom {
                 name = parent.name
                 description = project.description
