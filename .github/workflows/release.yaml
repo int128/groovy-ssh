@@ -27,7 +27,7 @@ jobs:
       - uses: gradle/gradle-build-action@v2
 
       - if: github.event_name != 'release'
-        run: ./gradlew generatePomFileForMavenPublication
+        run: ./gradlew generateMetadataFileForMavenPublication generatePomFileForMavenPublication
 
       - if: github.event_name == 'release'
         run: ./gradlew publish
