@@ -10,6 +10,10 @@ repositories {
 dependencies {
     implementation project(':core')
     implementation 'ch.qos.logback:logback-classic:1.1.2'
+    implementation 'org.codehaus.groovy:groovy-cli-commons:3.0.14'
+
+    testImplementation project(':server-integration-test')
+    testImplementation 'org.apache.sshd:sshd-core:2.2.0'
 }
 
 mainClassName = 'org.hidetake.groovy.ssh.Main'
