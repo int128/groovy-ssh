@@ -1,0 +1,15 @@
+plugins {
+    id 'groovy'
+    id 'application'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation project(':core')
+    implementation 'ch.qos.logback:logback-classic:1.1.2'
+}
+
+mainClassName = 'org.hidetake.groovy.ssh.Main'
