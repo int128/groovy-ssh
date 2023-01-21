@@ -8,8 +8,6 @@ install_host_key () {
   sudo chmod 600 "/etc/ssh/$1"
 }
 
-install_host_key ssh_host_dsa_key
-install_host_key ssh_host_rsa_key
 install_host_key ssh_host_ecdsa_key
 install_host_key ssh_host_ed25519_key
 

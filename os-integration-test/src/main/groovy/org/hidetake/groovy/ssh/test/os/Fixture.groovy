@@ -18,25 +18,18 @@ class Fixture {
                 host = 'localhost'
                 port = 22
                 user = 'tester'
-                identity = new File("etc/ssh/id_rsa")
+                identity = new File("etc/ssh/id_ecdsa")
                 knownHosts = addHostKey(new File("build/known_hosts"))
             }
         }
         service.remotes {
-            DefaultWithECDSAKey {
-                host = service.remotes.Default.host
-                port = service.remotes.Default.port
-                user = service.remotes.Default.user
-                identity = new File("etc/ssh/id_ecdsa")
-                knownHosts = service.remotes.Default.knownHosts
-            }
             DefaultWithPassphrase {
                 host = service.remotes.Default.host
                 port = service.remotes.Default.port
                 user = service.remotes.Default.user
                 knownHosts = service.remotes.Default.knownHosts
 
-                identity = new File("etc/ssh/id_rsa_pass")
+                identity = new File("etc/ssh/id_ecdsa_pass")
                 passphrase = 'gradle'
             }
             DefaultWithOpenSSHKnownHosts {
