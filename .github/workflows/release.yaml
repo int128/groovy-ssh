@@ -27,13 +27,19 @@ jobs:
       - uses: gradle/gradle-build-action@v2
 
       - if: github.event_name != 'release'
-        run: ./gradlew generateMetadataFileForMavenPublication generatePomFileForMavenPublication
+        run: ./gradlew sign
+        env:
+          SIGNING_KEY: ${{ secrets.SIGNING_KEY }}
+          SIGNING_PASSWORD: ${{ secrets.SIGNING_PASSWORD }}
 
       - if: github.event_name == 'release'
         run: ./gradlew publish
         env:
           VERSION: ${{ github.event.release.tag_name }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SIGNING_KEY: ${{ secrets.SIGNING_KEY }}
+          SIGNING_PASSWORD: ${{ secrets.SIGNING_PASSWORD }}
+          OSSRH_USER: ${{ secrets.OSSRH_USER }}
+          OSSRH_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
 
   cli:
     runs-on: ubuntu-latest
