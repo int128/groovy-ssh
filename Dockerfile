@@ -1,4 +1,4 @@
-from java:11
+from java:8
 
 volume /usr/src/groovy-ssh
 copy . /usr/src/groovy-ssh

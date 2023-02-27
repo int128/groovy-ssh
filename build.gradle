@@ -1,22 +1,4 @@
 allprojects {
-    group = 'org.hidetake'
-    version = System.getenv('CIRCLE_TAG') ?: 'SNAPSHOT'
-
-    repositories {
-        mavenCentral()
-    }
-
-    afterEvaluate {
-        tasks.withType(Test) {
-            finalizedBy ':testReport'
-            testReport.reportOn binResultsDir
-            reports.html.enabled = false
-            reports.junitXml.destination = file("${rootProject.buildDir}/test-results")
-        }
-    }
-}
-
-task testReport(type: TestReport) {
-    description 'Generates test report for all projects'
-    destinationDir = file("$buildDir/reports")
+	group = 'org.hidetake'
+	version = System.getenv('GROOVY_SSH_VERSION') ?: '0.0.0'
 }
