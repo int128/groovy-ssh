@@ -11,14 +11,15 @@ on:
     types:
       - created
 
+env:
+  GROOVY_SSH_VERSION: ${{ github.event.release.tag_name }}
+
 jobs:
   publish:
     runs-on: ubuntu-latest
     permissions:
       contents: read
       packages: write
-    env:
-      VERSION: ${{ github.event.release.tag_name || 'v0.0.0' }}
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-java@v3
