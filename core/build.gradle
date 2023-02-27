@@ -51,6 +51,7 @@ publishing {
 
     publications {
         maven(MavenPublication) {
+            // https://central.sonatype.org/publish/requirements/
             artifactId parent.name
             from components.java
             pom {
@@ -59,14 +60,14 @@ publishing {
                 url = 'https://github.com/int128/groovy-ssh'
                 licenses {
                     license {
-                        name = 'The Apache License, Version 2.0'
-                        url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                        name = 'Apache-2.0'
+                        url = 'https://www.apache.org/licenses/LICENSE-2.0.txt'
                     }
                 }
                 developers {
                     developer {
                         id = 'int128'
-                        name = 'int128'
+                        name = 'Hidetake Iwata'
                         email = 'int128@gmail.com'
                     }
                 }
