@@ -34,7 +34,7 @@ jobs:
           SIGNING_KEY: ${{ secrets.SIGNING_KEY }}
           SIGNING_PASSWORD: ${{ secrets.SIGNING_PASSWORD }}
 
-      - #if: github.event_name == 'release'
+      - if: github.event_name == 'release'
         run: ./gradlew publish
         env:
           SIGNING_KEY: ${{ secrets.SIGNING_KEY }}
