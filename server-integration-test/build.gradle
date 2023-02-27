@@ -7,23 +7,24 @@ repositories {
 }
 
 dependencies {
-    compile project(':core')
-    compile 'org.apache.sshd:sshd-core:2.9.0'
-    compile 'org.apache.sshd:sshd-sftp:2.9.0'
-    compile 'org.apache.sshd:sshd-scp:2.9.0'
+    implementation project(':core')
+    implementation 'org.apache.sshd:sshd-core:2.2.0'
+    implementation 'org.apache.sshd:sshd-sftp:2.2.0'
+    implementation 'org.apache.sshd:sshd-scp:2.2.0'
 
-    runtime 'org.bouncycastle:bcpkix-jdk15on:1.70'
+    runtimeOnly 'org.bouncycastle:bcpkix-jdk15on:1.61'
 
-    testCompile 'org.codehaus.groovy.modules.http-builder:http-builder:0.7.1'
-
-    testCompile 'org.spockframework:spock-core:1.3-groovy-2.5'
-    testRuntime 'cglib:cglib-nodep:3.3.0'
-    testRuntime 'org.objenesis:objenesis:3.2'
-
-    testRuntime 'ch.qos.logback:logback-classic:1.4.4'
+    testImplementation 'org.codehaus.groovy.modules.http-builder:http-builder:0.7.1'
+    testImplementation platform("org.spockframework:spock-bom:2.3-groovy-3.0")
+    testImplementation "org.spockframework:spock-core"
+    testImplementation "org.spockframework:spock-junit4"
+    testRuntimeOnly 'ch.qos.logback:logback-classic:1.4.5'
+    testRuntimeOnly 'cglib:cglib-nodep:3.2.10'
+    testRuntimeOnly 'org.objenesis:objenesis:3.0.1'
 }
 
 test {
+    useJUnitPlatform()
     mustRunAfter ':core:check'
 
     if (System.getProperty('os.name') == 'Linux') {

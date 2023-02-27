@@ -6,7 +6,6 @@ import com.jcraft.jsch.JSch
 import com.jcraft.jsch.SSHAgentConnector
 import com.jcraft.jsch.Session
 import groovy.util.logging.Slf4j
-import org.hidetake.groovy.ssh.core.Remote
 
 @Slf4j
 trait UserAuthentication {

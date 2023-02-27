@@ -1,36 +1,33 @@
 plugins {
     id 'groovy'
-    id 'application'
-    id 'com.github.johnrengelman.shadow' version '6.1.0'
+    id 'com.github.johnrengelman.shadow' version '7.1.2'
 }
 
-java {
-    sourceCompatibility = JavaVersion.VERSION_11
-    targetCompatibility = JavaVersion.VERSION_11
+repositories {
+    mavenCentral()
 }
-
-mainClassName = 'org.hidetake.groovy.ssh.Main'
 
 dependencies {
-    compile project(':core')
-    compile 'ch.qos.logback:logback-classic:1.4.4'
+    implementation project(':core')
+    implementation 'ch.qos.logback:logback-classic:1.4.5'
+    implementation 'org.codehaus.groovy:groovy-cli-commons:3.0.14'
 
-    runtime 'commons-cli:commons-cli:1.5.0'
-
-    testCompile project(':server-integration-test')
-
-    testCompile 'org.codehaus.groovy.modules.http-builder:http-builder:0.7.1'
-
-    testCompile 'org.spockframework:spock-core:1.3-groovy-2.5'
-    testRuntime 'cglib:cglib-nodep:3.3.0'
-    testRuntime 'org.objenesis:objenesis:3.2'
+    testImplementation project(':server-integration-test')
+    testImplementation 'org.apache.sshd:sshd-core:2.2.0'
+    testImplementation platform("org.spockframework:spock-bom:2.3-groovy-3.0")
+    testImplementation "org.spockframework:spock-core"
+    testImplementation "org.spockframework:spock-junit4"
+    testRuntimeOnly 'ch.qos.logback:logback-classic:1.4.5'
 }
 
 test {
     mustRunAfter ':server-integration-test:check'
+    useJUnitPlatform()
+}
 
-    if (System.getProperty('os.name') == 'Linux') {
-        systemProperty 'java.security.egd', 'file:/dev/./urandom'
+jar {
+    manifest {
+        attributes 'Main-Class': 'org.hidetake.groovy.ssh.Main'
     }
 }
 
@@ -39,10 +36,3 @@ shadowJar {
     classifier = ''
     version = ''
 }
-
-runShadow {
-    args "$projectDir/gssh-example.groovy"
-    workingDir rootDir
-}
-
-check.dependsOn runShadow
