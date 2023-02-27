@@ -58,6 +58,7 @@ jobs:
       - run: ./gradlew shadowJar
       - run: java -jar cli/build/libs/gssh.jar
       - run: sha256sum -b cli/build/libs/gssh.jar > cli/build/libs/gssh.jar.sha256
-      - run: gh release upload '${{ github.event.release.tag_name }}' cli/build/libs/gssh.jar cli/build/libs/gssh.jar.sha256
+      - if: github.event_name == 'release'
+        run: gh release upload '${{ github.event.release.tag_name }}' cli/build/libs/gssh.jar cli/build/libs/gssh.jar.sha256
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
