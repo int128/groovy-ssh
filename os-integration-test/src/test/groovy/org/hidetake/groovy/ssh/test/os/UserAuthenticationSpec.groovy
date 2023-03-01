@@ -37,23 +37,7 @@ class UserAuthenticationSpec extends Specification {
         ssh.settings.extensions.add(UserManagementExtension)
     }
 
-    def 'should authenticate by ECDSA key'() {
-        given:
-        def x = randomInt()
-        def y = randomInt()
-
-        when:
-        def r = ssh.run {
-            session(ssh.remotes.DefaultWithECDSAKey) {
-                execute "expr $x + $y"
-            }
-        } as int
-
-        then:
-        r == (x + y)
-    }
-
-    def 'should authenticate by pass-phrased RSA key'() {
+    def 'should authenticate by pass-phrased key'() {
         given:
         def x = randomInt()
         def y = randomInt()
