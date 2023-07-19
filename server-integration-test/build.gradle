@@ -12,15 +12,15 @@ dependencies {
     implementation 'org.apache.sshd:sshd-sftp:2.2.0'
     implementation 'org.apache.sshd:sshd-scp:2.2.0'
 
-    runtimeOnly 'org.bouncycastle:bcpkix-jdk15on:1.61'
+    runtimeOnly 'org.bouncycastle:bcpkix-jdk15on:1.70'
 
     testImplementation 'org.codehaus.groovy.modules.http-builder:http-builder:0.7.1'
     testImplementation platform("org.spockframework:spock-bom:2.3-groovy-3.0")
     testImplementation "org.spockframework:spock-core"
     testImplementation "org.spockframework:spock-junit4"
-    testRuntimeOnly 'ch.qos.logback:logback-classic:1.4.5'
-    testRuntimeOnly 'cglib:cglib-nodep:3.2.10'
-    testRuntimeOnly 'org.objenesis:objenesis:3.0.1'
+    testRuntimeOnly 'ch.qos.logback:logback-classic:1.4.8'
+    testRuntimeOnly 'cglib:cglib-nodep:3.3.0'
+    testRuntimeOnly 'org.objenesis:objenesis:3.3'
 }
 
 test {
