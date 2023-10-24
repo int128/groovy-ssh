@@ -12,14 +12,14 @@ repositories {
 dependencies {
     api localGroovy()
     api 'com.github.mwiede:jsch:0.2.5'
-    api 'org.slf4j:slf4j-api:2.0.7'
+    api 'org.slf4j:slf4j-api:2.0.9'
 
     testImplementation platform("org.spockframework:spock-bom:2.3-groovy-3.0")
     testImplementation "org.spockframework:spock-core"
     testImplementation "org.spockframework:spock-junit4"
     testRuntimeOnly 'cglib:cglib-nodep:3.3.0'
     testRuntimeOnly 'org.objenesis:objenesis:3.3'
-    testRuntimeOnly 'ch.qos.logback:logback-classic:1.4.8'
+    testRuntimeOnly 'ch.qos.logback:logback-classic:1.4.11'
 }
 
 test {
