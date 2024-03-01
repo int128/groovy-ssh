@@ -14,8 +14,11 @@ dependencies {
 }
 
 test {
+    useJUnitPlatform()
     mustRunAfter ':server-integration-test:check'
 }
+
+test.enabled = System.getenv('SSH_PORT') != null
 
 task startSshAgent(type: Exec) {
     commandLine 'ssh-agent'
