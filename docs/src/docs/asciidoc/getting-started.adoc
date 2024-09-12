@@ -56,7 +56,7 @@ Gradle 2.0 style:
 ----
 buildscript {
   repositories {
-    jcenter()
+    mavenCentral()
   }
   dependencies {
     classpath 'org.hidetake:gradle-ssh-plugin:{gradle-ssh-version}'
@@ -73,7 +73,7 @@ The plugin also supports Gradle 1.x with the backport library:
 ----
 buildscript {
   repositories {
-    jcenter()
+    mavenCentral()
   }
   dependencies {
     classpath 'org.hidetake:gradle-ssh-plugin:{gradle-ssh-version}'
