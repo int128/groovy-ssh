@@ -16,8 +16,8 @@ class Fixture {
         service.remotes {
             Default {
                 host = 'localhost'
-                port = 22
-                user = 'tester'
+                port = 2222
+                user = 'root'
                 identity = new File("etc/ssh/id_rsa")
                 knownHosts = addHostKey(new File("build/known_hosts"))
             }

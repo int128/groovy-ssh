@@ -1637,7 +1637,7 @@ Following example transfers the `groovy-all` jar and execute a script on the rem
 [source,groovy]
 ----
 repositories {
-  jcenter()
+  mavenCentral()
 }
 
 configurations {
