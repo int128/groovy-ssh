@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+  sshd:
+    image: panubo/sshd:latest
+    ports:
+      - "2222:22"
+    volumes:
+      - ../os-integration-test/etc/ssh/authorized_keys:/root/.ssh/authorized_keys
+      - ../os-integration-test/etc/ssh/ssh_host_rsa_key:/etc/ssh/ssh_host_rsa_key
+      - ../os-integration-test/etc/ssh/ssh_host_dsa_key:/etc/ssh/ssh_host_dsa_key
+      - ../os-integration-test/etc/ssh/ssh_host_ecdsa_key:/etc/ssh/ssh_host_ecdsa_key
+      - ../os-integration-test/etc/ssh/ssh_host_ed25519_key:/etc/ssh/ssh_host_ed25519_key
+    environment:
+      - SSH_ENABLE_ROOT=true

@@ -1,8 +1,8 @@
 ssh.remotes {
     tester {
         host = 'localhost'
-        port = 22
-        user = 'tester'
+        port = 2222
+        user = 'root'
         identity = new File('os-integration-test/etc/ssh/id_rsa')
         knownHosts = addHostKey(new File('cli/build/known_hosts'))
     }
@@ -15,5 +15,5 @@ ssh.run {
 }
 
 assert new File('cli/build/known_hosts').readLines().any { line ->
-    line.startsWith('localhost ssh-rsa')
+    line.startsWith('localhost ecdsa-sha2-nistp256')
 }
