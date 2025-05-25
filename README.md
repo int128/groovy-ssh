@@ -3,8 +3,11 @@ Groovy SSH [![build](https://github.com/int128/groovy-ssh/actions/workflows/buil
 
 Groovy SSH is an automation tool based on DSL providing the remote command execution and file transfer.
 
-https://gradle-ssh-plugin.github.io
+## Moved :warning:
 
+This repository has been moved to https://github.com/int128/gradle-ssh-plugin.
+
+----
 
 Contributions
 -------------
